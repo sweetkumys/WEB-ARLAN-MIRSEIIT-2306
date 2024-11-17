@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Data</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>News Data</h1>
+    <canvas id="newsChart"></canvas>
+  </div>
+  <script>
+    async function fetchNewsData() {
+      const response = await fetch('/api/news-data');
+      const data = await response.json();
+      const labels = data.matches.map(match => `${match.homeTeam.name} vs ${match.awayTeam.name}`);
+      const values = data.matches.map((_, index) => index + 1);
+
+      const ctx = document.getElementById('newsChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Upcoming Matches',
+            data: values,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    fetchNewsData();
+  </script>
+</body>
+</html>

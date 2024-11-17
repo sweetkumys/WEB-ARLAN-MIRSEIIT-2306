@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Data</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Financial Data</h1>
+    <canvas id="financialChart"></canvas>
+  </div>
+  <script>
+    async function fetchFinancialData() {
+      const response = await fetch('/api/financial-data');
+      const data = await response.json();
+      const labels = data.results.map(result => new Date(result.t).toLocaleDateString());
+      const prices = data.results.map(result => result.c);
+
+      const ctx = document.getElementById('financialChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'AAPL Stock Price',
+            data: prices,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: false
+            }
+          }
+        }
+      });
+    }
+
+    fetchFinancialData();
+  </script>
+</body>
+</html>
