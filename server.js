@@ -9,7 +9,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const axios = require('axios');
 const User = require('./models/User');
 const Portfolio = require('./models/Portfolio');
 
@@ -19,7 +18,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
@@ -76,19 +74,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Basic routes
-app.get('/', ensureAuthenticated, async (req, res) => {
-  try {
-    const financialResponse = await axios.get(`https://api.polygon.io/v2/aggs/ticker/AAPL/prev?adjusted=true&apiKey=${process.env.ALPHA_VANTAGE_API_KEY}`);
-    const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${process.env.NEWS_API_KEY}`);
-
-    res.render('index', {
-      financialData: financialResponse.data,
-      weatherData: weatherResponse.data
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Error fetching data.');
-  }
+app.get('/', (req, res) => {
+  res.render('index');
 });
 
 app.get('/login', (req, res) => {
@@ -151,7 +138,7 @@ app.post('/login', async (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.redirect('/');
+      return res.redirect('/portfolio');
     });
   })(req, res, next);
 });
