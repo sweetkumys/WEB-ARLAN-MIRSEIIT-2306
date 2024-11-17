@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles.css">
-  <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Login</title>
 </head>
+
 <body>
-  <h1>Login Page</h1>
-  <form action="/login" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <div id="2fa-section" style="display: none;">
-      <label for="2fa-code">2FA Code:</label>
-      <input type="text" id="2fa-code" name="2fa-code">
-      <br>
-    </div>
-    <button type="submit">Login</button>
-  </form>
-  <script>
-    document.getElementById('username').addEventListener('blur', async function() {
-      const username = this.value;
-      const response = await fetch(`/check-2fa?username=${username}`);
-      const data = await response.json();
-      if (data.twoFactorAuth) {
-        document.getElementById('2fa-section').style.display = 'block';
-      } else {
-        document.getElementById('2fa-section').style.display = 'none';
-      }
-    });
-  </script>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+    <h1>Login Page</h1>
+    <form action="/login" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <div id="2fa-section" style="display: none;">
+            <label for="2fa-code">2FA Code:</label>
+            <input type="text" id="2fa-code" name="2fa-code">
+            <br>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <script>
+        document.getElementById('username').addEventListener('blur', async function () {
+            const username = this.value;
+            const response = await fetch(`/check-2fa?username=${username}`);
+            const data = await response.json();
+            if (data.twoFactorAuth) {
+                document.getElementById('2fa-section').style.display = 'block';
+            } else {
+                document.getElementById('2fa-section').style.display = 'none';
+            }
+        });
+    </script>
 </body>
+
 </html>

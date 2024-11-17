@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/styles.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
 </head>
+
 <body>
-  <h1>Portfolio Page</h1>
-  <a href="/portfolio/new">Create New Portfolio Item</a>
-  <ul>
-    <% portfolios.forEach(portfolio => { %>
-      <li>
-        <h2><%= portfolio.title %></h2>
-        <p><%= portfolio.description %></p>
-        <div class="carousel">
-          <% portfolio.images.forEach(image => { %>
-            <img class="portfolio-image" src="<%= image %>" alt="<%= portfolio.title %>">
-          <% }) %>
-        </div>
-        <p>Created at: <%= portfolio.createdAt %></p>
-        <p>Updated at: <%= portfolio.updatedAt %></p>
-        <a href="/portfolio/<%= portfolio._id %>/edit">Edit</a>
-        <form action="/portfolio/<%= portfolio._id %>/delete" method="POST">
-          <button type="submit">Delete</button>
-        </form>
-      </li>
-    <% }) %>
-  </ul>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+    <h1>Portfolio Page</h1>
+    <a href="/portfolio/new">Create New Portfolio Item</a>
+    <ul>
+        <% portfolios.forEach(portfolio=> { %>
+            <li>
+                <h2>
+                    <%= portfolio.title %>
+                </h2>
+                <p>
+                    <%= portfolio.description %>
+                </p>
+                <div class="carousel">
+                    <% portfolio.images.forEach(image=> { %>
+                        <img class="portfolio-image" src="<%= image %>" alt="<%= portfolio.title %>">
+                        <% }) %>
+                </div>
+                <p>Created at: <%= portfolio.createdAt %>
+                </p>
+                <p>Updated at: <%= portfolio.updatedAt %>
+                </p>
+                <a href="/portfolio/<%= portfolio._id %>/edit">Edit</a>
+                <form action="/portfolio/<%= portfolio._id %>/delete" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            <% }) %>
+    </ul>
 </body>
+
 </html>

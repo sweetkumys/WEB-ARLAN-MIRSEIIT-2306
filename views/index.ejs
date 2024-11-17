@@ -1,88 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles.css">  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <title>Portfolio Platform</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Portfolio Platform</title>
 </head>
+
 <body>
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/login">Login</a></li>
-      <li><a href="/register">Register</a></li>
-      <li><a href="/portfolio">Portfolio</a></li>
-    </ul>
-  </nav>
-  <div class="container">
-    <h1>Welcome to the Portfolio Platform</h1>
-    <h2>Financial Data</h2>
-    <canvas id="financialChart"></canvas>
-    <h2>Weather Data</h2>
-    <canvas id="weatherChart"></canvas>
-  </div>
-  <script>
-    async function fetchFinancialData() {
-      const response = await fetch('/api/financial-data');
-      const data = await response.json();
-      const labels = data.results.map(result => new Date(result.t).toLocaleDateString());
-      const prices = data.results.map(result => result.c);
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Welcome to the Portfolio Platform</h1>
+        <h2>Financial Data</h2>
+        <canvas id="financialChart"></canvas>
+        <h2>Weather Data</h2>
+        <canvas id="weatherChart"></canvas>
+    </div>
+    <script>
+        async function fetchFinancialData() {
+            const response = await fetch('/api/financial-data');
+            const data = await response.json();
+            const labels = data.results.map(result => new Date(result.t).toLocaleDateString());
+            const prices = data.results.map(result => result.c);
 
-      const ctx = document.getElementById('financialChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'AAPL Stock Price',
-            data: prices,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: false
-            }
-          }
+            const ctx = document.getElementById('financialChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'AAPL Stock Price',
+                        data: prices,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
         }
-      });
-    }
 
-    async function fetchWeatherData() {
-      const response = await fetch('/api/weather-data');
-      const data = await response.json();
-      const labels = ['Temperature', 'Humidity', 'Pressure'];
-      const values = [data.main.temp, data.main.humidity, data.main.pressure];
+        async function fetchWeatherData() {
+            const response = await fetch('/api/weather-data');
+            const data = await response.json();
+            const labels = ['Temperature', 'Humidity', 'Pressure'];
+            const values = [data.main.temp, data.main.humidity, data.main.pressure];
 
-      const ctx = document.getElementById('weatherChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Weather Data',
-            data: values,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
+            const ctx = document.getElementById('weatherChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Weather Data',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
-      });
-    }
 
-    fetchFinancialData();
-    fetchWeatherData();
-  </script>
+        fetchFinancialData();
+        fetchWeatherData();
+    </script>
 </body>
+
 </html>
